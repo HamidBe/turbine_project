@@ -1,7 +1,7 @@
 import requests
 from unidecode import unidecode
 
-listeAppellations = ["ACCESSOIRE","ALBUM","ALCOVE","APPLIQUE","AQUARELLE","ARGENTERIE","ARMOIRE","ASSIETTE","ASSIETTE CREUSE","ASSIETTE PLATE","ATHENIENNE","ATLAS","BAHUT","BALAI D'ATRE","BALDAQUIN","BANC","BANDEAU","VITRINE","VOILE NUPTIAL"]
+listeAppellations = ["Bernard lavilliers","Kevin Schwantz","Michel Platini","Zinédine Zidane"]
 output = open("/home/laurent/git/turbine_project/appellation2wikipedia_rapport.txt", "w")
 output.write("appellation \t Nb reponses \t forme preferee \t toutes reponses \n")
 for appellation in listeAppellations:
