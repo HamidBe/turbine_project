@@ -9,6 +9,7 @@ for appellation in listeAppellations:
     #url = "http://domybiblio.net/search/search_api.php?type_search=subject&q=" + appellation + "&type_doc=all&period=&pageID=1&wp=true&idref=true&loc=true"
     #resultats = etree.parse(url)
     jsonfile = requests.get(url)
+    print(jsonfile.json())
     listeTitres = jsonfile.json()[1]
     NbReponses = len(listeTitres)
     listeURL = jsonfile.json()[3]
