@@ -1,7 +1,6 @@
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from flask import g
 from psycopg2.extras import  NamedTupleCursor
 
 def create_connection():
@@ -41,7 +40,8 @@ def create_tables(conn) -> None:
         denom_origine varchar(350), 
         lien_externe varchar(350),
         observation varchar(300),
-        geojson varchar(5000));"""
+        geojson varchar(5000),
+        genre varchar(5));"""
 
     query_create_select(conn, requete)
 

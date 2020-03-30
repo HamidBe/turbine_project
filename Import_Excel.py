@@ -32,7 +32,7 @@ def ouvre_fichier_excel():
     # text:'OBSERVATIONS'
     # text:'GeoJSON'
 
-    requete_insert = "insert into nom_des_voies (voie_id, voie_complet, voie_fantoir, voie_date_cre, voie_real, voie_officiel, tenant, aboutissant, denom_annee, dm_seance, delib_num, cote_archives, denom_origine, lien_externe, observation, geojson) values("
+    requete_insert = "insert into nom_des_voies (voie_id, voie_complet, voie_fantoir, voie_date_cre, voie_real, voie_officiel, tenant, aboutissant, denom_annee, dm_seance, delib_num, cote_archives, denom_origine, lien_externe, observation, geojson, genre) values("
     requete_valeurs = ""
 
     # On crée la connexion à la base de données
@@ -118,7 +118,7 @@ def ouvre_fichier_excel():
         requete = requete + str(denom_origine) + "', '"
         requete = requete + str(lien_externe) + "', '"
         requete = requete + str(observation) + "', '"
-        requete = requete + str(geojson) + "');"
+        requete = requete + str(geojson) + "', '');"
         print("requete2: ", requete)
         database.query_create_select(conn, requete)
 
