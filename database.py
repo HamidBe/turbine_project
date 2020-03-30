@@ -28,29 +28,30 @@ def create_tables(conn) -> None:
     requete = """CREATE TABLE IF NOT EXISTS nom_des_voies (
         voie_id serial, 
         voie_complet varchar(250), 
-        voie_fantoir varchar(4), 
-        voie_date_cre  date,
-        voie_real boolean,
-        voie_officiel boolean,
+        voie_fantoir varchar(10), 
+        voie_date_cre  varchar(10),
+        voie_real varchar(15),
+        voie_officiel varchar(15),
         tenant varchar(250),
         aboutissant varchar(250),
-        denom_annee integer,
-        dm_seance date,
-        delib_num integer,
+        denom_annee varchar(15),
+        dm_seance varchar(10),
+        delib_num varchar(15),
         cote_archives varchar(20),
-        denom_origine varchar(250), 
-        lien_externe varchar(250),
-        observation varchar(100),
-        geojson varchar(200));"""
+        denom_origine varchar(350), 
+        lien_externe varchar(350),
+        observation varchar(300),
+        geojson varchar(5000));"""
 
     query_create_select(conn, requete)
 
 def query_create_select(conn, requete):
     cur = conn.cursor()
+    print(requete)
     cur.execute(requete)
     return cur
 
-def query(conn, requete, data_dict):
+def query_dict(conn, requete, data_dict):
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(requete, data_dict)
     return cur

@@ -6,7 +6,7 @@ output = open("/home/laurent/git/turbine_project/appellation2wikipedia_rapport.t
 output.write("appellation \t Nb reponses \t forme preferee \t toutes reponses \n")
 for appellation in listeAppellations:
     url = "https://fr.wikipedia.org/w/api.php?action=opensearch&search=" + appellation + "&limit=10&namespace=0&format=json"
-    #url = "http://domybiblio.net/search/search_api.php?type_search=subject&q=" + appellation + "&type_doc=all&period=&pageID=1&wp=true&idref=true&loc=true"
+    url = "http://domybiblio.net/search/search_api.php?type_search=subject&q=" + appellation + "&type_doc=all&period=&pageID=1&wp=true&idref=true&loc=true"
     #resultats = etree.parse(url)
     jsonfile = requests.get(url)
     print(jsonfile.json())
