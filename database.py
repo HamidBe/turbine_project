@@ -47,7 +47,7 @@ def create_tables(conn) -> None:
 
 def query_create_select(conn, requete):
     cur = conn.cursor()
-    print(requete)
+    #print(requete)
     cur.execute(requete)
     return cur
 
