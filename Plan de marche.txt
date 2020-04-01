@@ -1,7 +1,0 @@
-Lire la colonne voie complet
-Enlever et stoquer le type de voie (rue, place, allée, avenue, ...)
-Ensuite vient certainement le prénom suivi du nom
-
-On peut checker si ce prénom est connu et genré (masculin, féminin)
-Cela permet dans la grande majorité des cas de décider
-Voir la proportion des données indécises

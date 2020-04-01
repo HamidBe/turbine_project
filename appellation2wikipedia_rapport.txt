@@ -1,6 +1,0 @@
-appellation 	 Nb reponses 	 forme preferee 	 toutes reponses 
-Bernard lavilliers	2		Bernard Lavilliers;https://fr.wikipedia.org/wiki/Bernard_Lavilliers|Bernard Lavilliers (album);https://fr.wikipedia.org/wiki/Bernard_Lavilliers_(album)
-Kevin Schwantz	1		Kevin Schwantz;https://fr.wikipedia.org/wiki/Kevin_Schwantz
-Michel Platini	1		Michel Platini;https://fr.wikipedia.org/wiki/Michel_Platini
-Zinédine Zidane	2		Zinedine Zidane;https://fr.wikipedia.org/wiki/Zin%C3%A9dine_Zidane|Zinedine Zidane Football;https://fr.wikipedia.org/wiki/Zin%C3%A9dine_Zidane_Football
-
