@@ -1,4 +1,4 @@
-import wikipediaapi
+import wikipedia
 import json
 
 from urllib.request import urlopen
@@ -11,12 +11,15 @@ data = json.loads(decoded)
 print( "Gender: " + data["gender"]); #Gender: male
 
 
-wiki_wiki = wikipediaapi.Wikipedia('fr')
+wikipedia.set_lang('fr')
 
-page_py = wiki_wiki.page('Georges Sand')
+page_py = wikipedia.page('Georges Sand')
 
 
-print("Page - Exists: %s" % page_py.exists())
+print("Page - Exists: %s" % page_py)
+# print("Content: ", page_py.content)
+print("Titre: ", page_py.title)
+
 #print(page_py.sections)
 
 def print_sections(sections, compteur1, compteur2, level=0):
@@ -52,7 +55,7 @@ cpt_elle = 0
 cpt_il = 0
 
 
-print_sections(page_py.sections, cpt_il, cpt_elle, 0)
+print_sections(page_py, cpt_il, cpt_elle, 0)
 
 print("Femmes trouvées: ", cpt_elle)
 print("Hommes trouvées: ", cpt_il)

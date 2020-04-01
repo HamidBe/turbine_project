@@ -41,7 +41,7 @@ def create_tables(conn) -> None:
         lien_externe varchar(350),
         observation varchar(300),
         geojson varchar(5000),
-        genre varchar(5));"""
+        genre varchar(10));"""
 
     query_create_select(conn, requete)
 
