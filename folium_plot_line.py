@@ -1,21 +1,47 @@
 import folium
+import database
+def insert_base():
+    
+    try:
+        carto_femin= folium.Map(location=[45.16667, 5.71667],zoom_start=11) 
+        conn = database.create_connection()
 
-gpx_file = open('path_to_gpx_file.gpx', 'r')
+        cur = database.query_create_select(conn, "Select * From nom_des_voies;")
 
-points = [5.73188935696086;5.1853088153218]
+        print("Connected to database")
 
-ave_lat = sum(p[0] for p in points)/len(points)
-ave_lon = sum(p[1] for p in points)/len(points)
+        for ligne in cur:
+            
+                geojson=ligne[15]
+                
+                genre=ligne[16]
+                voie_complet=ligne[1]
+                Nom = str( geojson) + " , " + str( voie_complet) + " , " +str (genre)
+                #print(Nom)
+                Nom = str(genre)
+                if genre=='':
+                    icon = folium.Icon(color='black')
+                elif genre == 'male':
+                    icon = folium.Icon(color='green')
+                elif genre == "female":
+                    icon = folium.Icon(color='orange')
+                else:
+                    icon = folium.Icon(color='red')
+                if geojson!='' :
+                    folium.Marker(geojson,popup=Nom, icon=icon).add_to(carto_femin)
+            
+        carto_femin.save(outfile='carto_femin.html')
 
-# Load map centred on average coordinates
-my_map = folium.Map(location=[ave_lat, ave_lon], zoom_start=14)
+        
+        print("Printing each row")
 
-#add a markers
-for each in points:
-    folium.Marker(each).add_to(my_map)
-
-#fadd lines
-folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(my_map)
-
-# Save map
-my_map.save("./gpx_berlin_withmarker.html")
+        
+    
+    except Exception as e:
+            print(e)
+            print("Failed to read data from  table", e)
+    finally:
+            if  conn :
+                print("The  connection is closed")
+                return carto_femin
+insert_base()
