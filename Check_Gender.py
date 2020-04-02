@@ -3,7 +3,7 @@ import gender_guesser.detector as gender
 
 
 def select_en_base():
-    debug = 0
+    debug = 2
     conn = database.create_connection()
 
     cur = database.query_create_select(conn, "Select * From nom_des_voies;")
@@ -34,7 +34,7 @@ def select_en_base():
                 print(f'prenom :{prenom} genre:{data}')
 
             # Mise à jour du genre en base données
-            requete = "update nom_des_voies set genre = '" + data + "' Where voie_id = '" + str(ligne[0]) + "';"
+            requete = "update nom_des_voies set genre = '" + data + "' Where voie_id = " + str(ligne[0]) + ";"
             try:
                 database.query_create_select(conn, requete)
             except:
@@ -45,6 +45,14 @@ def select_en_base():
 
         except IndexError:
             print("Juste un nom dans la rue")
+            print(ligne[1])
+            d = gender.Detector()
+            data = d.get_gender(prenom)
+            if debug == 2:
+                print(f'prenom :{prenom} genre:{data}')
+
+            # Mise à jour du genre en base données
+            requete = "update nom_des_voies set genre = '" + data + "' Where voie_id = " + str(ligne[0]) + ";"
 
 
 select_en_base()
