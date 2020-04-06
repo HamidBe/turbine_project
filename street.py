@@ -1,7 +1,12 @@
 import pandas as pd
 import json
 import folium
+from folium import FeatureGroup
+
 import database
+import numpy as np
+from folium.plugins import FloatImage
+
 
 # Dessine une line polygonale à partir des coordonnées GPS contenues
 # dans l'objet GeoJSON
@@ -22,7 +27,7 @@ def draw_polyline(geo_json, map, color="blue", weight=5, opacity=0.6):
         folium.PolyLine(points, color=color, weight=weight, opacity=opacity).add_to(map)
 
 # Création d'une carte centrée sur Grenoble
-fmap = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=20)
+fmap = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=13.5)
 
 # Initialisation du DataFrame df
 # à partir des données du fichier CSV
@@ -54,24 +59,10 @@ try:
 
         draw_polyline(geojson, fmap, couleur)
 
-
-
-
-
-#    for i in range(1, 927):
-        #        print(i)
-        #if (i % 2) == 0:
-        #    draw_polyline(df['GeoJSON'][i], fmap, "blue")
-        #else:
-        #    if i == 249: print(df['GeoJSON'][i])
-#    draw_polyline(df['GeoJSON'][i], fmap, "purple")
-
-
-     # draw_polyline(df['GeoJSON'][112], fmap, "red")
+    # On ajoute la légende
 
 except Exception as e:
     print(e)
-
 
 # Sauvegarde de la carte dans un fichier HTML
 fmap.save("street.html")
