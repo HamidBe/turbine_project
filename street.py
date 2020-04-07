@@ -1,12 +1,7 @@
 import pandas as pd
 import json
 import folium
-from folium import FeatureGroup
-
 import database
-import numpy as np
-from folium.plugins import FloatImage
-
 
 # Dessine une line polygonale à partir des coordonnées GPS contenues
 # dans l'objet GeoJSON
@@ -23,23 +18,14 @@ def draw_polyline(geo_json, map, color="blue", weight=5, opacity=0.6):
       for line in data['coordinates']:
         points = []
         for coord in line:
-          points.append((coord[1], coord[0]))
+            points.append((coord[1], coord[0]))
         folium.PolyLine(points, color=color, weight=weight, opacity=opacity).add_to(map)
 
 
-def draw_marker(geo_json, popup, color="green"):
-    data = json.loads(geo_json)
-    point = []
+def draw_marker(data, map, texte, color="green"):
 
-    for pt in data:
-        point.append(pt)
-
-    folium.Marker(
-        location=[45.3311, -121.7113],
-        popup=popup,
-        icon=folium.Icon(color=color)
-    ).add_to(map)
-
+    for i in range(0, len(data)):
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name']).add_to(map)
 
 # Création d'une carte centrée sur Grenoble
 fmap = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=13.5)
@@ -62,8 +48,7 @@ try:
 
     for ligne in cur:
         geojson = ligne[1]
-        print(geojson)
-        print(geojson)
+
         sexe = ligne[0]
 
         if sexe == "masculin":
@@ -74,6 +59,31 @@ try:
             couleur = "gray"
 
         draw_polyline(geojson, fmap, couleur)
+
+    cur = database.query_create_select(conn, "select * from coord_points_interets;")
+
+    list_point_interets = []
+
+    # Element 6 et 7: coordonnées du point
+
+    latitude = []
+    longitude = []
+    texte = []
+
+    for ligne in cur:
+        latitude.append(ligne[7])
+        longitude.append(ligne[6])
+        texte.append(ligne[8])
+
+    # Maintenant on construit le dataframe pour la fonction folium.Marker
+
+    data = pd.DataFrame({
+        'lat': latitude,
+        'lon': longitude,
+        'name': texte
+    })
+
+    draw_marker(data, fmap, 'red')
 
     # On ajoute la légende
 
