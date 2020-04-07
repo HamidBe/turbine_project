@@ -16,15 +16,30 @@ def draw_polyline(geo_json, map, color="blue", weight=5, opacity=0.6):
     if data['type'] == 'LineString':
       points = []
       for coord in data['coordinates']:
-        points.append( (coord[1], coord[0]) ) 
+        points.append((coord[1], coord[0]))
       folium.PolyLine(points, color=color, weight=weight, opacity=opacity).add_to(map)
   
     if data['type'] == 'MultiLineString':
       for line in data['coordinates']:
         points = []
         for coord in line:
-          points.append( (coord[1], coord[0]) ) 
+          points.append((coord[1], coord[0]))
         folium.PolyLine(points, color=color, weight=weight, opacity=opacity).add_to(map)
+
+
+def draw_marker(geo_json, popup, color="green"):
+    data = json.loads(geo_json)
+    point = []
+
+    for pt in data:
+        point.append(pt)
+
+    folium.Marker(
+        location=[45.3311, -121.7113],
+        popup=popup,
+        icon=folium.Icon(color=color)
+    ).add_to(map)
+
 
 # Création d'une carte centrée sur Grenoble
 fmap = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=13.5)
@@ -47,7 +62,8 @@ try:
 
     for ligne in cur:
         geojson = ligne[1]
-        print(ligne)
+        print(geojson)
+        print(geojson)
         sexe = ligne[0]
 
         if sexe == "masculin":
@@ -65,7 +81,7 @@ except Exception as e:
     print(e)
 
 # Sauvegarde de la carte dans un fichier HTML
-fmap.save("street.html")
+fmap.save("templates/street.html")
 
 
 
