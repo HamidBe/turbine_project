@@ -4,10 +4,11 @@ import database
 # On crée le dictionnaire correspondant à la base de données
 ligne_excel = {}
 
-def ouvre_fichier_excel():
+def ouvre_fichier_excel_voies():
 
     # On ouvre le fichier Exceln
     book = open_workbook('PLANDEVILLE_VOIES.xls',on_demand=True)
+    book = open_workbook('./Donnees/Doc_Villes/PLANDEVILLE_VOIES_VDG.xls',on_demand=True)
 
     worksheet = book.sheet_by_name('Feuille1')
 
@@ -67,23 +68,6 @@ def ouvre_fichier_excel():
         observation = str(row[18].value).replace("'", "''")
         geojson = str(row[19].value).replace("'", "''")
 
-        print("voie_id: ", voie_id)
-        print("voie_complet: ", voie_complet)
-        print("voie_fantoir: ", voie_fantoir)
-        print("voie_date_cre: ", voie_date_cre)
-        print("voie_real: ", voie_real)
-        print("voie_officiel: ", voie_officiel)
-        print("tenant: ", tenant)
-        print("aboutissant: ", aboutissant)
-        print("denom_annee: ", denom_annee)
-        print("dm_seance: ", dm_seance)
-        print("delib_num: ", delib_num)
-        print("cote_archives: ", cote_archives)
-        print("denom_origine: ", denom_origine)
-        print("lien_externe: ", lien_externe)
-        print("observation: ", observation)
-        print("geojson: ", geojson)
-
         if voie_real == 'oui':
             voie_real = 'true'
             voie_officiel = 'true'
@@ -120,9 +104,91 @@ def ouvre_fichier_excel():
         requete = requete + str(observation) + "', '"
         requete = requete + str(geojson) + "', '');"
         print("requete2: ", requete)
-        database.query_create_select(conn, requete)
+        try:
+            database.query_create_select(conn, requete)
+        except Exception as e:
+            print(e)
 
     book.release_resources()
     del book
 
-ouvre_fichier_excel()
+def ouvre_fichier_excel_monuments():
+    # On ouvre le fichier Exceln
+    book = open_workbook('./Donnees/Doc_Villes/PATRIMOINE_VDG.xls', on_demand=True)
+
+    worksheet = book.sheet_by_name('Feuille1')
+
+    requete_insert = "insert into coord_points_interets(idtf, titre, thématiques, periodes, types, adresse, latitude, longitude, texte_fr, Texte_en, bibliographie, site_internet, credit, legende) values("
+    requete_valeurs = ""
+
+    # On crée la connexion à la base de données
+    conn = database.create_connection()
+
+    # On crée les tables si elles n'existent pas encore
+    database.create_tables(conn)
+
+    num_rows = worksheet.nrows - 1
+    curr_row = 0
+    while curr_row < num_rows:
+        curr_row += 1
+        row = worksheet.row(curr_row)
+
+        # idtf, titre, thématiques, periodes, types, adresse, latitude, longitude, texte_fr, Texte_en, bibliographie, site_internet, credit, legende
+
+
+        idtf = row[0].value
+        titre = str(row[1].value).replace("'", "''").replace("’", "’’")
+        thematiques = str(row[2].value).replace("'", "''")
+        periodes = str(row[3].value).replace("'", "''")
+        types = str(row[4].value).replace("'", "''")
+        adresse  = str(row[5].value).replace("'", "''")
+        latitude = str(row[6].value).replace("'", "''")
+        longitude = str(row[7].value).replace("'", "''")
+        texte_fr = str(row[8].value).replace("'", "''")
+        texte_en = str(row[9].value).replace("'", "''")
+        bibliographie = str(row[10].value).replace("'", "''")
+        site_internet = str(row[11].value).replace("'", "''")
+        credit = str(row[12].value).replace("'", "''")
+        legende = str(row[13].value).replace("'", "''")
+
+        print("idtf: ", idtf)
+        print("titre: ", titre)
+        print("thematiques: ", thematiques)
+        print("periodes: ", periodes)
+        print("types: ", types)
+        print("adresse: ", adresse)
+        print("latitude: ", latitude)
+        print("longitude: ", longitude)
+        print("texte_fr: ", texte_fr)
+        print("texte_en: ", texte_en)
+        print("bibliographie: ", bibliographie)
+        print("site_internet: ", site_internet)
+        print("credit: ", credit)
+        print("legende: ", legende)
+
+        requete = requete_insert + str(idtf) + ", '"
+        requete = requete + str(titre) + "', '"
+        requete = requete + str(thematiques) + "', '"
+        requete = requete + str(periodes) + "', '"
+        requete = requete + str(types) + "', '"
+        requete = requete + str(adresse) + "', "
+        requete = requete + str(latitude) + ", "
+        requete = requete + str(longitude) + ", '"
+        requete = requete + str(texte_fr) + "', '"
+        requete = requete + str(texte_en) + "', '"
+        requete = requete + str(bibliographie) + "', '"
+        requete = requete + str(site_internet) + "', '"
+        requete = requete + str(credit) + "', '"
+        requete = requete + str(legende) + "');"
+
+
+        print(requete)
+
+        try:
+            database.query_create_select(conn, requete)
+        except Exception as e:
+            print(e)
+
+
+#ouvre_fichier_excel_voies()
+ouvre_fichier_excel_monuments()
