@@ -6,20 +6,14 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pandas = "*"
 folium = "*"
-psycopg2-binary = "*"
-xlrd = "*"
 gender-guesser = "*"
 flask = "*"
-unidecode = "*"
-requests = "*"
-jupyter = "*"
-geojson = "*"
 gunicorn = "*"
-redis = "*"
-wikipedia = "*"
-python = "*"
+psycopg2-binary = "*"
+requests = "*"
+xlrd = "*"
+jsonify = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.6"
