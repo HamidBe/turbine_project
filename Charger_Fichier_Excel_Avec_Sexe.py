@@ -4,7 +4,7 @@ import database
 def mise_a_jour_genre(fichier):
     # Initialisation du DataFrame df
     # à partir des données du fichier CSV
-#    file = open('/home/laurent/git/turbine_project/Donnees/fichiers avec genre/1.csv', "r")
+    # file = open('home/hb/PROJET/turbine_prjt/turbine_project/Donnees/fichiers avec genre/1.csv', "r")
     file = open(fichier, "r")
     # utiliser readlines pour lire toutes les lignes du fichier
     # La variable "lignes" est une liste contenant toutes les lignes du fichier
@@ -71,9 +71,9 @@ def sauve_base_de_donnes():
         print(inst.args)  # arguments stored in .args
 
 
-#mise_a_jour_genre('/home/laurent/git/turbine_project/Donnees/fichiers avec genre/1.csv')
-#mise_a_jour_genre('/home/laurent/git/turbine_project/Donnees/fichiers avec genre/2.csv')
-#mise_a_jour_genre('/home/laurent/git/turbine_project/Donnees/fichiers avec genre/3.csv')
-#mise_a_jour_genre('/home/laurent/git/turbine_project/Donnees/fichiers avec genre/4.csv')
+#mise_a_jour_genre('/home/hb/PROJET/turbine_prjt/turbine_project/Donnees/fichiers avec genre/1.csv')
+#mise_a_jour_genre('/home/hb/PROJET/turbine_prjt/turbine_project/Donnees/fichiers avec genre/2.csv')
+#mise_a_jour_genre('/home/hb/PROJET/turbine_prjt/turbine_project/Donnees/fichiers avec genre/3.csv')
+#mise_a_jour_genre('/home/hb/PROJET/turbine_prjt/turbine_project/Donnees/fichiers avec genre/4.csv')
 
 sauve_base_de_donnes()

@@ -17,6 +17,7 @@ requests = "*"
 wikipedia-api = "*"
 jupyter = "*"
 geojson = "*"
+webbrowser = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.6"

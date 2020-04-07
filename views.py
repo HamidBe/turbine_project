@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, flash, redirect, url_for, session,jsonify
+from flask import Flask, request, render_template, flash, redirect, url_for, session, jsonify
 import hashlib, uuid, os
 import database
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
@@ -27,6 +27,6 @@ def street():
 	return render_template("street.html")  
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5432, debug=True)   
+    app.run(host='localhost', debug=True)   
 
 
