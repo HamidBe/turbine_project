@@ -19,6 +19,7 @@ geojson = "*"
 gunicorn = "*"
 redis = "*"
 wikipedia = "*"
+python = "*"
 
 [requires]
 python_version = "3.8"

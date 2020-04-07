@@ -1,4 +1,4 @@
-from views import app
+from carto-turbine import app
 
 if __name__ == "__main__":
    app.run()
