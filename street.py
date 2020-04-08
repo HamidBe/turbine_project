@@ -1,97 +1,106 @@
-import pandas as pd
-import json
 import folium
 import database
+import pandas as pd
+import json
 
-# Dessine une line polygonale à partir des coordonnées GPS contenues
-# dans l'objet GeoJSON
-def draw_polyline(geo_json, map, color="blue", weight=5, opacity=0.6):
-    data = json.loads(geo_json)
-    
+# on charge la base de données centrée sur Grenoble
+m = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=13.5)
+
+# On crée la connexion à  la base de données
+conn = database.create_connection()
+
+# On charge les points d'intérêts depuis la base de données
+cur = database.query_create_select(conn, "select * from coord_points_interets;")
+
+# On crée la dataframe contenant les données
+# Element 6 et 7 du curseur: coordonnées du point
+
+latitude = []
+longitude = []
+texte = []
+
+for ligne in cur:
+    latitude.append(ligne[7])
+    longitude.append(ligne[6])
+    texte.append(ligne[8])
+
+# Maintenant on construit le dataframe pour la fonction folium.Marker
+
+data = pd.DataFrame({
+    'lat': latitude,
+    'lon': longitude,
+    'name': texte
+})
+
+# On crée le groupe "Points d'Intérêt"
+group0 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Points d&apos;Intéret</span>')
+
+# Maintenant on associe les points d'intérêt à la carte
+for i in range(0, len(data)):
+#    folium.CircleMarker(([data.iloc[i]['lon'], data.iloc[i]['lat']]), color='red', radius=2).add_to(group0)
+    folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:160]).add_to(group0)
+
+group0.add_to(m)
+
+group1 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Routes Féminines</span>')
+
+# On va chercher les données ne base concernant les rues dont le nom est féminin
+cur = database.query_create_select(conn, "select genre, geojson From nom_des_voies where geojson not like '%[[[%' and genre = 'feminin';")
+
+for ligne in cur:
+    geojson = ligne[1]
+
+    couleur = "red" # On affiche les rues dont le nom est féminin
+    data = json.loads(geojson)
+
     if data['type'] == 'LineString':
-      points = []
-      for coord in data['coordinates']:
-        points.append((coord[1], coord[0]))
-      folium.PolyLine(points, color=color, weight=weight, opacity=opacity).add_to(map)
-  
-    if data['type'] == 'MultiLineString':
-      for line in data['coordinates']:
         points = []
-        for coord in line:
+
+        for coord in data['coordinates']:
             points.append((coord[1], coord[0]))
-        folium.PolyLine(points, color=color, weight=weight, opacity=opacity).add_to(map)
+
+            folium.PolyLine(points, color='red', weight=5, opacity=0.6).add_to(group1)
+
+    if data['type'] == 'MultiLineString':
+        for line in data['coordinates']:
+            points = []
+            for coord in line:
+                points.append((coord[1], coord[0]))
+
+            folium.PolyLine(points, color='red', weight=5, opacity=0.6).add_to(group1)
+
+group1.add_to(m)
+
+group2 = folium.FeatureGroup(name='<span style=\\"color: blue;\\">Routes Masculines</span>')
 
 
-def draw_marker(data, map, texte, color="green"):
+# On va maintenant chercher les données ne base concernant les rues dont le nom est masculin
+cur = database.query_create_select(conn, "select genre, geojson From nom_des_voies where geojson not like '%[[[%' and genre = 'masculin';")
 
-    for i in range(0, len(data)):
-        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name']).add_to(map)
+for ligne in cur:
+    geojson = ligne[1]
 
-# Création d'une carte centrée sur Grenoble
-fmap = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=13.5)
+    couleur = "blue" # On affiche les rues dont le nom est masculin
+    data = json.loads(geojson)
 
-# Initialisation du DataFrame df
-# à partir des données du fichier CSV
-#df = pd.read_csv('PLANDEVILLE_AXES-DE-VOIES_VDG_EPSG4326.json', sep = ',')
+    if data['type'] == 'LineString':
+        points = []
 
-# Dessin de la rue N°67 : Avenue Jean Perrot
+        for coord in data['coordinates']:
+            points.append((coord[1], coord[0]))
 
-try:
-    # La j'affiche les rues en bleu ou en rouge si l'index est pair ou impair (pour voir)
-    # je vais modifier ce code pour aller chercher en base de données le sexe (male = bleu, female = rose
-    conn = database.create_connection()
+            folium.PolyLine(points, color='blue', weight=5, opacity=0.6).add_to(group2)
 
-    cur = database.query_create_select(conn, "select genre, geojson From nom_des_voies where geojson not like '%[[[%';")
+    if data['type'] == 'MultiLineString':
+        for line in data['coordinates']:
+            points = []
+            for coord in line:
+                points.append((coord[1], coord[0]))
 
-    print("Connected to database")
-    list_coord = []
+            folium.PolyLine(points, color='blue', weight=5, opacity=0.6).add_to(group2)
 
-    for ligne in cur:
-        geojson = ligne[1]
+group2.add_to(m)
 
-        sexe = ligne[0]
+folium.map.LayerControl('topleft', collapsed=False).add_to(m)
 
-        if sexe == "masculin":
-            couleur = "blue"
-        elif sexe == "feminin":
-            couleur = "red"
-        else:
-            couleur = "gray"
-
-        draw_polyline(geojson, fmap, couleur)
-
-    cur = database.query_create_select(conn, "select * from coord_points_interets;")
-
-    list_point_interets = []
-
-    # Element 6 et 7: coordonnées du point
-
-    latitude = []
-    longitude = []
-    texte = []
-
-    for ligne in cur:
-        latitude.append(ligne[7])
-        longitude.append(ligne[6])
-        texte.append(ligne[8])
-
-    # Maintenant on construit le dataframe pour la fonction folium.Marker
-
-    data = pd.DataFrame({
-        'lat': latitude,
-        'lon': longitude,
-        'name': texte
-    })
-
-    draw_marker(data, fmap, 'red')
-
-    # On ajoute la légende
-
-except Exception as e:
-    print(e)
-
-# Sauvegarde de la carte dans un fichier HTML
-fmap.save("templates/street.html")
-
-
-
+m.save("templates/street.html")
