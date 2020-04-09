@@ -69,5 +69,5 @@ def import_db():
         cur = database.query_create_select(conn, ligne)
 
 
-export_db()
-#import_db()
+#export_db()
+import_db()
