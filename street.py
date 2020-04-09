@@ -5,7 +5,13 @@ import json
 
 # on charge la base de données centrée sur Grenoble
 m = folium.Map(location=[45.1875602, 5.7357819], tiles="OpenStreetMap", zoom_start=13.5)
-
+folium.raster_layers.TileLayer('Open Street Map').add_to(m)
+folium.raster_layers.TileLayer('Stamen Terrain').add_to(m)
+folium.raster_layers.TileLayer('Stamen Toner').add_to(m)
+folium.raster_layers.TileLayer('Stamen Watercolor').add_to(m)
+folium.raster_layers.TileLayer('CartoDB Positron').add_to(m)
+folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(m)
+conn = database.create_connection()
 # On crée la connexion à  la base de données
 conn = database.create_connection()
 
@@ -101,6 +107,6 @@ for ligne in cur:
 
 group2.add_to(m)
 
-folium.map.LayerControl('topleft', collapsed=False).add_to(m)
-
+#folium.map.LayerControl('topleft', collapsed=False).add_to(m)
+folium.LayerControl().add_to(m) 
 m.save("templates/street.html")
