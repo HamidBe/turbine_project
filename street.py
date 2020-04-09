@@ -61,6 +61,7 @@ for i in range(0, len(data)):
     elif (data.iloc[i]['titre'].find("Evolution de la ville") > 0):
         folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='purple', icon='info-sign')).add_to(group02)
 
+# On ajoute les groupes à la carte
 group01.add_to(m)
 group02.add_to(m)
 group03.add_to(m)
