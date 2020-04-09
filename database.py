@@ -9,7 +9,12 @@ def create_connection():
     try:
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect("postgres://qsarkzwgihnksx:bafd5c8e9b01c6db344744a98dd1ab7c852aac89d22d053c645d6d885e8ba457@ec2-3-230-106-126.compute-")
+        conn = psycopg2.connect(host="localhost",
+                                dbname="carto_db",
+                                user="carto",
+                                password="carto_pwd",
+                                port=5432)
+
 
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 

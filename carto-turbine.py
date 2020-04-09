@@ -9,7 +9,7 @@ import time
 
 app = Flask(__name__)
 connection = database.create_connection()
-cur = connection.cursor()
+#cursor = connection.cursor()
 
 app.config.update(
     DEBUG=True,
