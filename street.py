@@ -30,7 +30,7 @@ for ligne in cur:
 #    print(ligne)
     latitude.append(ligne[7])
     longitude.append(ligne[6])
-    texte_point_interet.append("<a href=" + ligne[11] + "target=""_blank>" + ligne[11] + "</a>" + '\n' + ligne[8])
+    texte_point_interet.append("<a href=" + ligne[11] + "" " target=""_blank>" + ligne[11] + "</a>" + '\n' + ligne[8])
     titre.append(ligne[2])
 
 
