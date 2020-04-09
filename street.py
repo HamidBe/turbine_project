@@ -44,23 +44,27 @@ data = pd.DataFrame({
 })
 
 # On crée le groupe "Points d'Intérêt"
-group0 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Points d&apos;Intéret</span>')
+group01 = folium.FeatureGroup(name='<span style=\\"color: green;\\">Art et Culture</span>')
+group02 = folium.FeatureGroup(name='<span style=\\"color: purple;\\">Sciences et Techniques</span>')
+group03 = folium.FeatureGroup(name='<span style=\\"color: red;\\>"Patrimoine Naturel</span>')
+group04 = folium.FeatureGroup(name='<span style=\\"color: blue;\\>"Histoire et Evolution</span>')
 
 # Maintenant on associe les points d'intérêt à la carte
 for i in range(0, len(data)):
-#    folium.CircleMarker(([data.iloc[i]['lon'], data.iloc[i]['lat']]), color='red', radius=2).add_to(group0)
-#    folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200]).add_to(group0)
-    print(data.iloc[i]['titre'][0:14])
-    if (data.iloc[i]['titre'][0:14]) == "Art et culture":
-        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='green', icon='info-sign')).add_to(group0)
-    elif (data.iloc[i]['titre'][0:14]) == "Sciences/tech":
-        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='blue', icon='info-sign')).add_to(group0)
-    elif (data.iloc[i]['titre'][0:14]) == "Patrimoine nat":
-        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='red', icon='info-sign')).add_to(group0)
-    elif (data.iloc[i]['titre'][0:14]) == "Histoire & Evo":
-        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='purple', icon='info-sign')).add_to(group0)
 
-group0.add_to(m)
+    if (data.iloc[i]['titre'].find("Sciences/techn") > 0):
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='green', icon='info-sign')).add_to(group01)
+    elif (data.iloc[i]['titre'].find("Patrimoine nat") > 0):
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='red', icon='info-sign')).add_to(group03)
+    elif (data.iloc[i]['titre'].find("Histoire & Evo") > 0):
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='blue', icon='info-sign')).add_to(group04)
+    elif (data.iloc[i]['titre'].find("Evolution de la ville") > 0):
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='purple', icon='info-sign')).add_to(group02)
+
+group01.add_to(m)
+group02.add_to(m)
+group03.add_to(m)
+group04.add_to(m)
 
 group1 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Routes Féminines</span>')
 
