@@ -16,7 +16,7 @@ def export_db():
         requete_valeurs = ""
 
         for i in range(1, 17):
-            requete_valeurs = requete_valeurs + "'" + str(row[i]) + "', "
+            requete_valeurs = requete_valeurs + "'" + str(row[i]).replace("'", "''") + "', "
 
         requete_finale = requete_insert + str(row[0]) + ", " + requete_valeurs[0:len(requete_valeurs) - 2] + ");"
         print(requete_finale)
@@ -69,5 +69,5 @@ def import_db():
         cur = database.query_create_select(conn, ligne)
 
 
-#export_db()
-import_db()
+export_db()
+#import_db()
