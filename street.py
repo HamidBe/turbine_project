@@ -17,19 +17,24 @@ cur = database.query_create_select(conn, "select * from coord_points_interets;")
 
 latitude = []
 longitude = []
-texte = []
+texte_point_interet = []
+titre = []
 
 for ligne in cur:
+#    print(ligne)
     latitude.append(ligne[7])
     longitude.append(ligne[6])
-    texte.append(ligne[8])
+    texte_point_interet.append("<a href=" + ligne[11] + "target=""_blank>" + ligne[11] + "</a>" + '\n' + ligne[8])
+    titre.append(ligne[2])
+
 
 # Maintenant on construit le dataframe pour la fonction folium.Marker
 
 data = pd.DataFrame({
     'lat': latitude,
     'lon': longitude,
-    'name': texte
+    'titre': titre,
+    'name': texte_point_interet
 })
 
 # On crée le groupe "Points d'Intérêt"
@@ -38,7 +43,16 @@ group0 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Points d&apos;I
 # Maintenant on associe les points d'intérêt à la carte
 for i in range(0, len(data)):
 #    folium.CircleMarker(([data.iloc[i]['lon'], data.iloc[i]['lat']]), color='red', radius=2).add_to(group0)
-    folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:160]).add_to(group0)
+#    folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200]).add_to(group0)
+    print(data.iloc[i]['titre'][0:14])
+    if (data.iloc[i]['titre'][0:14]) == "Art et culture":
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='green', icon='info-sign')).add_to(group0)
+    elif (data.iloc[i]['titre'][0:14]) == "Sciences/tech":
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='blue', icon='info-sign')).add_to(group0)
+    elif (data.iloc[i]['titre'][0:14]) == "Patrimoine nat":
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='red', icon='info-sign')).add_to(group0)
+    elif (data.iloc[i]['titre'][0:14]) == "Histoire & Evo":
+        folium.Marker([data.iloc[i]['lon'], data.iloc[i]['lat']], popup=data.iloc[i]['name'][0:200], icon=folium.Icon(color='purple', icon='info-sign')).add_to(group0)
 
 group0.add_to(m)
 
