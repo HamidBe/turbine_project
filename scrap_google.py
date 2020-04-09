@@ -2,16 +2,16 @@ from collections import Counter
 import requests
 from bs4 import BeautifulSoup
 
-liste_test = ["pierre ruibet", "victor hugo", "george sand", "francois mittérant", "lionel jospin"]
 
-liste_nom_nmasculin = ["né", "français", "italien", "espagnol", "allemand", "commandant", "mort", "pilote", "fondateur", "homme", "général", "officier", "il", "comte", "roi", "acteur"]
-liste_nom_feminin = ["née", "italienne", "espagnole", "allemande", "fondatrice", "femme", "française", "morte", "dédédée", "parisienne", "fille", "actrice", "elle", "reine", "comtesse"]
+def check_genre(nom):
 
-params = {}
+    liste_nom_nmasculin = ["né", "français", "italien", "espagnol", "allemand", "commandant", "mort", "pilote", "fondateur", "homme", "général", "officier", "il", "comte", "roi", "acteur"]
+    liste_nom_feminin = ["née", "italienne", "espagnole", "allemande", "fondatrice", "femme", "française", "morte", "dédédée", "parisienne", "fille", "actrice", "elle", "reine", "comtesse"]
 
-url = "https://www.google.com/search"
+    params = {}
 
-for nom in liste_test:
+    url = "https://www.google.com/search"
+
     params["q"] = nom
     r = requests.get(url, params=params)
     resultat_soup = BeautifulSoup(r.content, 'html.parser')
@@ -24,6 +24,8 @@ for nom in liste_test:
     pourcentage = somme_masc/(somme_femi + somme_masc)*100
 
     if pourcentage > 50:
-        print("{} est certainement un homme.".format(nom))
+        retour = "masculin"
     else:
-        print("{} est certainement une femme.".format(nom))
+        retour = "feminin"
+
+    return retour
