@@ -1,1 +1,1 @@
-web: gunicorn carto-turbine:app
+web: gunicorn carto_turbine:app
