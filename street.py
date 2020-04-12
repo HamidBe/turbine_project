@@ -11,7 +11,7 @@ folium.raster_layers.TileLayer('Stamen Toner').add_to(m)
 folium.raster_layers.TileLayer('Stamen Watercolor').add_to(m)
 folium.raster_layers.TileLayer('CartoDB Positron').add_to(m)
 folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(m)
-conn = database.create_connection()
+
 # On crée la connexion à  la base de données
 conn = database.create_connection()
 
@@ -67,7 +67,7 @@ group02.add_to(m)
 group03.add_to(m)
 group04.add_to(m)
 
-group1 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Routes Féminines</span>')
+group1 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Routes Féminines</span>', show=False)
 
 # On va chercher les données ne base concernant les rues dont le nom est féminin
 cur = database.query_create_select(conn, "select genre, geojson From nom_des_voies where geojson not like '%[[[%' and genre = 'feminin';")
@@ -99,7 +99,7 @@ group1.add_to(m)
 group2 = folium.FeatureGroup(name='<span style=\\"color: blue;\\">Routes Masculines</span>')
 
 
-# On va maintenant chercher les données ne base concernant les rues dont le nom est masculin
+# On va maintenant chercher les données en base concernant les rues dont le nom est masculin
 cur = database.query_create_select(conn, "select genre, geojson From nom_des_voies where geojson not like '%[[[%' and genre = 'masculin';")
 
 for ligne in cur:
@@ -127,5 +127,5 @@ for ligne in cur:
 group2.add_to(m)
 
 #folium.map.LayerControl('topleft', collapsed=False).add_to(m)
-folium.LayerControl().add_to(m) 
+folium.LayerControl().add_to(m)
 m.save("templates/street.html")
