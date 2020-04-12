@@ -67,7 +67,7 @@ group02.add_to(m)
 group03.add_to(m)
 group04.add_to(m)
 
-group1 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Routes Féminines</span>', show=False)
+group1 = folium.FeatureGroup(name='<span style=\\"color: red;\\">Routes Féminines</span>')              # (, show=False) a ajouter pour que la checkbox soit décochée au départ
 
 # On va chercher les données ne base concernant les rues dont le nom est féminin
 cur = database.query_create_select(conn, "select genre, geojson From nom_des_voies where geojson not like '%[[[%' and genre = 'feminin';")
